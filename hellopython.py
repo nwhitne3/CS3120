@@ -1,4 +1,3 @@
-
 # imports
 # random number generator
 import random
@@ -501,20 +500,20 @@ print("defining an Animal object using a class:")
 
 '''
    Specifying values for the object.
-__ name is optional
-__ specifies private scope, however I think it is only a guideline and not
+_ name is optional
+_ specifies private scope, however I think it is only a guideline and not
    enforced?
    To access or change those values inside the class, it must be done via
    functions inside that class.
 '''
 class Animal:
     # None specifies the lack of a value, like NULL in other languages
-    # e.g. __name = None
+    # e.g. _name = None
     # e.g. "" , which is pretty much interchangeable with None
-    __name = ""
-    __height = 0
-    __weight = 0
-    __sound = 0
+    _name = ""
+    _height = 0
+    _weight = 0
+    _sound = 0
 
     '''
     A constructor within the class for setting up (initializing) an object,
@@ -527,67 +526,68 @@ class Animal:
     values, which are specified above.
     '''
     def __init__(self, name, height, weight, sound):
-        self.__name = name
-        self.__height = height
-        self.__weight = weight
-        self.__sound = sound
+        self._name = name
+        self._height = height
+        self._weight = weight
+        self._sound = sound
 
     # creating a function within the class that can set the name
     def set_name(self, name):
-        # the existing name __name is now changed to whatever name "name" the
+        # the existing name _name is now changed to whatever name "name" the
         # call to set_name passed in
-        self.__name = name
+        self._name = name
 
     # creating a function within the class that  can get/access/return the name
     def get_name(self):
         # This is encapsulation. Lets verify that the existing "name"
         # value is valid if build out the function more.
-        return self.__name
+        return self._name
 
     # the rest of the setters and getters for the other values of Animal:
     def set_height(self, height):
-        self.__height = height
+        self._height = height
 
     def set_sound(self, sound):
-        self.__sound = sound
+        self._sound = sound
 
     def set_weight(self, weight):
-        self.__weight = weight
+        self._weight = weight
 
     def get_height(self):
         # return heigh as a string?
-        return str(self.__height)
+        return str(self._height)
 
     def get_sound(self):
-        return self.__sound
+        return self._sound
 
     def get_weight(self):
-        return str(self.__weight)
+        return str(self._weight)
 
     # used to demonstrate polymorphism:
     def get_type(self):
         # prints out the class name
-        print("Animal")
+        print("We are using the Animal class")
 
     # so can print out all the Animal class info to the screen:
     def toString(self):
         # another way to specify string output using curly braces {}
         return "{} is {} cm tall, weighs {} kilograms, and says" \
-               " {}".format(self.__name, self.__height, self.__weight,
-                            self.__sound)
+               " {}".format(self._name, self._height, self._weight,
+                            self._sound)
 
 print("Demonstrating what this looks like with some Animal objects:")
-print("A kitty object which is of type Animal with values passed to"
+print("A kitty object which is of type Animal with values passed to "
       "the constructor:")
 cat = Animal('Whiskers', 33, 10, 'Meow')
 print(cat.toString())
 
 print("Demonstration of OO Inheritance using a new class called Dog:")
 
-# inherits from the Animal class
+
+# The Dog class inherits every object from the Animal class
 class Dog(Animal):
     # every dog has an owner
-    __owner = ""
+    _owner = ""
 
     '''
     Overwriting the constructor for the animal class so can be more specific:
@@ -597,24 +597,25 @@ class Dog(Animal):
     Animal class.
     '''
     def __init__(self, name, height, weight, sound, owner):
-        self.__owner = owner
+        # to set owner
+        self._owner = owner
         '''
         the "super" class is the class above in the hierarchy, AKA the parent
         class
         This specifies use the Dog class, and then for the following 4 values,
-        pass in the values to the parent class.
+        pass in the values to the parent Animal class.
         '''
         super(Dog, self).__init__(name, height, weight, sound)
 
     # setter for the Dog class
     def set_owner(self, owner):
-        #__self.owner = owner
+        #_self.owner = owner
         # change the default owner value to the value passed in
-        self.__owner = owner
+        self._owner = owner
 
     # getter for the Dog class
     def get_owner(self):
-        return self.__owner
+        return self._owner
 
     # for demonstration purposes
     def get_type(self):
@@ -627,9 +628,9 @@ class Dog(Animal):
     def toString(self):
         # another way to specify string output using curly braces {}
         return "{} is {} cm tall, weighs {} kilograms, says" \
-               " {}, and is owned by {}".format(self.__name, self.__height,
-                                                self.__weight, self.__sound,
-                                                self.__owner)
+               " {}, and is owned by {}".format(self._name, self._height,
+                                                self._weight, self._sound,
+                                                self._owner)
 
     '''
     Demo of method overloading: Can perform different tasks based on the
@@ -646,3 +647,35 @@ class Dog(Animal):
 # creating a dog object outside the class
 spot = Dog("Spot", 53, 27, "Ruff", "Derek")
 print(spot.toString())
+
+'''
+Polymorphism
+Allows the programmer to refer to classes as their super class and then
+automatically have the correct functions called.
+'''
+
+print("Polymorphism")
+
+#Polymorphism example
+class AnimalTesting:
+    # get_type function. Receives animal objects.
+    def get_type(self, animal):
+        # refers to Animal class and get_type()
+        animal.get_type()
+
+test_animals = AnimalTesting()
+
+# test_animals.get_type(Animal)
+test_animals.get_type(cat)
+# test_animals.get_type(Dog)
+test_animals.get_type(spot)
+
+#multiple sounds
+print("Multiple sounds:")
+print("The default with nothing passed in, is to do the sound once")
+spot.multiple_sounds()
+print("The cat does not have the multiple_sounds function so a call to it"
+      " does nothing and produces an error.")
+#cat.multiple_sounds()
+print("A call to repeat the animal sound 4 times:")
+spot.multiple_sounds(4)
